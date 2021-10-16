@@ -1,5 +1,4 @@
-const { expect } = require("@jest/globals");
-const { test } = require("picomatch");
+const {game} = require("../game");
 
 beforeAll(() => {
     let fs = require("fs");
@@ -7,7 +6,7 @@ beforeAll(() => {
     document.open();
     document.write(fileContents);
     document.close();
-})
+});
 
 describe("game object contains correct keys", () => {
     test("score key exists", () => {
