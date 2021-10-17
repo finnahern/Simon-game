@@ -91,4 +91,9 @@ describe("gameplay works correctly", () => {
         showTurns();
         expect(game.turnNumber).toBe(0);
     });
+    test("should incrememnt score if turn is correct", () => {
+        game.playerMoves.push(game.currentGame[0]);
+        playerTurn();
+        expect(game.score).toBe(1);
+    })
 });
