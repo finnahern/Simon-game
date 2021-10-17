@@ -2,7 +2,7 @@
  * @jest-environment jsdom
  */
 
-const { game, newGame, showScore, addTurn, showTurns, lightsOn } = require("../game");
+const { game, newGame, showScore, addTurn, lightsOn, showTurns, playerTurn  } = require("../game");
 
 beforeAll(() => {
     let fs = require("fs");
@@ -25,6 +25,9 @@ describe("game object contains correct keys", () => {
     test("choices key exists", () => {
         expect("choices" in game).toBe(true);
     });
+    test("turnNumber key exists", () => {
+        expect("turnNumber" in game).toBe(true);
+    });
     test("choices contains the correct IDs", () => {
         expect(game.choices).toEqual(["button1", "button2", "button3", "button4"]);
     });
@@ -35,6 +38,7 @@ describe("newGame works correctly", () => {
         game.score = 42;
         game.playerMoves = [1, 2, 3];
         game.currentGame = [1, 2, 3];
+        game.turnNumber = 42;
         document.getElementById("score").innerText = "42";
         newGame();
     });
@@ -44,11 +48,20 @@ describe("newGame works correctly", () => {
     test("should reset playerMoves array", () => {
         expect(game.playerMoves.length).toEqual(0);
     });
+    test("turnNumber should be reset to 0", () => {
+        expect(game.turnNumber).toBe(0);
+    });
     test("should be one move in the computer's array", () => {
         expect(game.currentGame.length).toEqual(1);
     });
     test("should display 0 for the element with id of score", () => {
         expect(document.getElementById("score").innerText).toBe(0);
+    });
+    test("data listener attribute has been set to true on each circle div", () => {
+        const elements = document.getElementsByClassName("circle");
+        for (let element of elements){
+            expect(element.getAttribute("data-listener")).toEqual("true");
+        }
     });
 });
 
@@ -72,5 +85,10 @@ describe("gameplay works correctly", () => {
         let button = document.getElementById(game.currentGame[0]);
         lightsOn(game.currentGame[0]);
         expect(button.classList).toContain("light");
+    });
+    test("showTurns should update game.turnNumber", () => {
+        game.turnNumber = 42;
+        showTurns();
+        expect(game.turnNumber).toBe(0);
     });
 });
